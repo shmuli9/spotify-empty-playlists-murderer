@@ -56,15 +56,13 @@ router.get("/delete_playlists", async (req, res, next) => {
 })
 
 async function deletePlaylists(pListsToDelete) {
-  const deletedPlists = []
-
   return new Promise((resolve, reject) => {
     const deletionTimer = setInterval(() => {
       spotifyApi.unfollowPlaylist(pListsToDelete.pop().id).catch(console.log)
 
       if (pListsToDelete.length === 0) {
         clearInterval(deletionTimer)
-        resolve(deletedPlists)
+        resolve()
       }
     }, 350)
   })
