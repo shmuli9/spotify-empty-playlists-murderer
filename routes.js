@@ -34,7 +34,7 @@ router.get("/delete_playlists", async (req, res, next) => {
       offset += 50
 
       for (const itemsKey in items) {
-        if (items[itemsKey].name === 'Pure Go' || items[itemsKey].tracks.total === 0) {
+        if (items[itemsKey].tracks.total === 0) {
           pListsToDelete.push({
             id: items[itemsKey].id,
             name: items[itemsKey].name,
