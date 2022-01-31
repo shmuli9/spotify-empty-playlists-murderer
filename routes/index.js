@@ -1,9 +1,7 @@
 const express = require('express');
-const querystring = require("querystring");
 const router = express.Router();
 const config = require("../config")
 const spotifyApi = require("../api")
-const request = require('request'); // "Request" library
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
