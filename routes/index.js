@@ -22,7 +22,7 @@ router.get("/delete_playlists", async (req, res, next) => {
 
   const userData = await spotifyApi.getMe()
   const user = userData.body
-  let pListsToDelete = []
+  const pListsToDelete = []
   let offset = 0
 
   const timer = setInterval(() => {
@@ -46,16 +46,29 @@ router.get("/delete_playlists", async (req, res, next) => {
       if (offset > total) {
         clearInterval(timer)
         console.log("interval cleared")
-        res.json(pListsToDelete)
+
+        deletePlaylists(pListsToDelete).then(deleted => {
+          res.json(deleted)
+        })
       }
     }).catch(errHandler)
   }, 350)
-
-  // const deletionTimer = setInterval(() => {
-  //   spotifyApi.unfollowPlaylist(pListsToDelete.pop().id)
-  //   if (pListsToDelete.length === 0) clearInterval(deletionTimer)
-  // }, 350)
 })
+
+async function deletePlaylists(pListsToDelete) {
+  const deletedPlists = []
+
+  return new Promise((resolve, reject) => {
+    const deletionTimer = setInterval(() => {
+      spotifyApi.unfollowPlaylist(pListsToDelete.pop().id).catch(console.log)
+
+      if (pListsToDelete.length === 0) {
+        clearInterval(deletionTimer)
+        resolve(deletedPlists)
+      }
+    }, 350)
+  })
+}
 
 router.get('/callback', function (req, res, next) {
   // your application requests refresh and access tokens
