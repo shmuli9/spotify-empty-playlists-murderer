@@ -47,8 +47,15 @@ router.get("/delete_playlists", async (req, res, next) => {
         clearInterval(timer)
         console.log("interval cleared")
 
-        deletePlaylists(pListsToDelete).then(deleted => {
-          res.json(deleted)
+        if (pListsToDelete.length) {
+          deletePlaylists(pListsToDelete).then(() => {
+            res.json({
+              msg: "Success - Empty Playlists deleted"
+            })
+          })
+        }
+        res.json({
+          msg: "No empty playlists found - No deletions made"
         })
       }
     }).catch(errHandler)
